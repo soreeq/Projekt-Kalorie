@@ -14,8 +14,51 @@ namespace ConsoleApp24
         static void Main(string[] args)
         {
             DodajWpis("kurczak", 300);
-
+            ZCzytajWpis(1);
+            ZCzytajWpis(2);
+            ZCzytajWpis(3);
+            ZCzytajWpis(4);
+            ZCzytajWpis(8);
             Console.ReadKey();
+        }
+
+        static private void ZCzytajWpis(int a)
+        {
+            SqlCommand command = new SqlCommand();
+            SqlConnection myCon = new SqlConnection(conn);
+
+
+            try
+            {
+                command.CommandText = "SELECT nazwa, kcal FROM Produkty WHERE ID = @id";
+                command.Parameters.Add("@id", System.Data.SqlDbType.Int).Value = a;
+
+                myCon.Open();
+                command.Connection = myCon;
+                SqlDataReader reader = command.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while(reader.Read())
+                    {
+                        var nazwa = reader["nazwa"].ToString();
+                        var kcal = Convert.ToInt32(reader["kcal"]);
+                       
+                        Console.WriteLine("Produkt " +nazwa+ "   Kalorycznosc:  "+kcal);
+                        
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Brak wiersza");
+                }
+                myCon.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("problem " + e);
+            }
+
         }
 
         static private void DodajWpis(string nazwa, int kcal)
@@ -35,13 +78,15 @@ namespace ConsoleApp24
                 int Result = command.ExecuteNonQuery();
 
                 Console.WriteLine(Result);
-
+                myCon.Close();
             }
             catch(Exception e)
             {
                 Console.WriteLine("blad" + e);
 
             }
+
+
         }
     }
 }
