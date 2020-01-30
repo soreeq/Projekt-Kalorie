@@ -67,7 +67,7 @@ namespace ConsoleApp24.Classes
 
             wynik = 66 + (13 * waga) + (5 * wzrost) - (4 * wiek);
 
-            Console.WriteLine("Zeby schudnac potrzebujesz minimum " + wynik + " kalorii");
+            Console.WriteLine("Zeby schudnac potrzebujesz dziennie dostarczac " + wynik + " kalorii");
 
         }
 
