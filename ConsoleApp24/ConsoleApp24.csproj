@@ -58,10 +58,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\IleKalorii.cs" />
+    <Compile Include="Classes\Spalanie.cs" />
+    <Compile Include="Classes\Profil.cs" />
     <Compile Include="Classes\Menu.cs" />
     <Compile Include="Classes\Produkty.cs" />
-    <Compile Include="Interfaces\IMenu.cs" />
-    <Compile Include="Interfaces\IProdukty.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -89,6 +90,8 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

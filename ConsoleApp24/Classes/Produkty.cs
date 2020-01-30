@@ -1,15 +1,16 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ConsoleApp24.Interfaces;
+
 using System.Data.Sql;
 using System.Data.SqlClient;
 
 namespace ConsoleApp24.Classes
 {
-    class Produkty : IProdukty
+    class Produkty
     {
         public static string conn = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\Database1.mdf;Integrated Security=True";
         private string _nazwaProduktu;
@@ -56,12 +57,42 @@ namespace ConsoleApp24.Classes
 
         public void WypiszListeProd()
         {
+            liczbaProduktow = LiczbaProduktow();
             for (int i = 1; i <= _liczbaProduktow; i++)
             {
                 ZCzytajWpis(i);
             }
-            Console.WriteLine("Powrot do menu");
-            Console.ReadKey();
+        }
+        public int ZwrocKcal(int id)
+        {
+            SqlCommand command = new SqlCommand();
+            SqlConnection myCon = new SqlConnection(conn);
+            var kcal = 0;
+
+            try
+            {
+                command.CommandText = "SELECT kcal FROM Produkty WHERE ID = @id";
+                command.Parameters.Add("@id", System.Data.SqlDbType.Int).Value = id;
+
+                myCon.Open();
+                command.Connection = myCon;
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        kcal = Convert.ToInt32(reader["kcal"]);
+                        break;
+                    }
+                }
+                myCon.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("problem " + e);
+            }
+
+            return kcal;
         }
         public void ZCzytajWpis(int a)
         {
@@ -71,7 +102,7 @@ namespace ConsoleApp24.Classes
 
             try
             {
-                command.CommandText = "SELECT nazwa, kcal FROM Produkty WHERE ID = @id";
+                command.CommandText = "SELECT ID, nazwa, kcal FROM Produkty WHERE ID = @id";
                 command.Parameters.Add("@id", System.Data.SqlDbType.Int).Value = a;
 
                 myCon.Open();
@@ -82,10 +113,11 @@ namespace ConsoleApp24.Classes
                 {
                     while (reader.Read())
                     {
+                        var Id = Convert.ToInt32(reader["ID"]);
                         var nazwa = reader["nazwa"].ToString();
                         var kcal = Convert.ToInt32(reader["kcal"]);
 
-                        Console.WriteLine("Produkt " + nazwa + "   Kalorycznosc:  " + kcal);
+                        Console.WriteLine("Id : " + Id + "\nProdukt: " + nazwa + "   /   Kalorycznosc:  " + kcal);
 
                     }
                 }
